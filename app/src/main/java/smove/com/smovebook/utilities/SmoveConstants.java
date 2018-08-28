@@ -5,4 +5,5 @@ package smove.com.smovebook.utilities;
  */
 
 public class SmoveConstants {
+    public static  String END_POINT = "";
 }
