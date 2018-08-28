@@ -1,10 +1,12 @@
 package smove.com.smovebook.utilities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import smove.com.smovebook.R;
 
 public class CommonUtils {
     static AlertDialog alertDialog;
+    static ProgressDialog plainProgressIndicator=null;
     public static boolean isConnectingToInternet(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -77,6 +80,44 @@ public class CommonUtils {
             });
             alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showBusyIndicator(final AppCompatActivity activityObj) {
+        try {
+            if (activityObj != null) {
+                activityObj.runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (plainProgressIndicator == null)
+                            plainProgressIndicator = new ProgressDialog(activityObj);
+
+                        if (!(plainProgressIndicator.isShowing())) {
+                            plainProgressIndicator = ProgressDialog.show(activityObj, "", "Loading", true, false);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeBusyIndicator(final AppCompatActivity activityObj) {
+        try {
+            activityObj.runOnUiThread(new Runnable() {
+                public void run() {
+                    try {
+                        if (plainProgressIndicator != null && plainProgressIndicator.isShowing()) {
+                            plainProgressIndicator.dismiss();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }

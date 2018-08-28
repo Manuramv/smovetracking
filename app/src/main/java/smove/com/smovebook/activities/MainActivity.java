@@ -166,6 +166,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
     private void showTaxiAvailability() {
         Log.d("TAG","show Taxi Availability");
+        CommonUtils.showBusyIndicator(this);
         //convertToUnixTImestamp(etFromTime.getText().toString());
         BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
         bookingAvailabilityServiceObj.getBookingAvailabilityInfo(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()),CommonUtils.convertToUnixTImestamp(etToTime.getText().toString()));
@@ -173,6 +174,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
         try {
+            CommonUtils.removeBusyIndicator(this);
             if(response.code()==200) {
                 if (response != null && response.body().getData() != null) {
                     //Datum  indexItem=  ( (Datum) response.body().getData());
@@ -190,6 +192,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
             }
         } catch (Exception e){
             Log.d("TAG","something went wrong::"+e);
+            CommonUtils.removeBusyIndicator(this);
             utils.showCustomPopupMessage(MainActivity.this,"Something went wrong, please try again later");
         }
     }
