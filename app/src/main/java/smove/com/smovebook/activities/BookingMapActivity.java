@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -39,7 +41,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Response;
 import smove.com.smovebook.R;
+import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
+import smove.com.smovebook.utilities.SmoveConstants;
 
 public class BookingMapActivity extends CustomBaseActivity {
     private GoogleMap mMap;
@@ -52,6 +57,13 @@ public class BookingMapActivity extends CustomBaseActivity {
     String provider;
     private final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private boolean locationPermissionGranted = false;
+    private GetBookingAvailabilityResponse  bookAvailabilityData;
+    private String bookAvailabilityDataStr;
+    Bitmap redMarker, greenMarker;
+    int height = 90;
+    int width = 70;
+    Response<GetBookingAvailabilityResponse> bookingAvailabilityData;
+    private boolean mapload=false;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -61,9 +73,23 @@ public class BookingMapActivity extends CustomBaseActivity {
         mActivity = this;
         checkAndRequestPermissions();
 
+        //testing =  getIntent().getParcelableArrayListExtra("bookingavailability");
+       // bookAvailabilityDataStr = getIntent().getStringExtra("bookingavailability");
+       // bookAvailabilityData = bookAvailabilityDataStr;
+
+        bookingAvailabilityData = SmoveConstants.BOOK_RESPONSE;
+        Log.d("TAG","Booking availability::"+ bookingAvailabilityData.body().getData().size());
+
         mMapView = (MapView) findViewById(R.id.mapBooking);
         mMapView.onCreate(savedInstanceState);
         mLocationManager = (LocationManager) mActivity.getSystemService(LOCATION_SERVICE);
+        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_redcar);
+        Bitmap b = bitmapdraw.getBitmap();
+        redMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        BitmapDrawable bitmapd = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_greencarr);
+        Bitmap b1 = bitmapd.getBitmap();
+        greenMarker = Bitmap.createScaledBitmap(b1, width, height, false);
+
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
@@ -83,26 +109,28 @@ public class BookingMapActivity extends CustomBaseActivity {
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 // Add a marker in Sydney, Australia, and move the camera.
-                /*if (facilityDetailCommonJsonLists.size() > 0) {
+                if (bookingAvailabilityData.body().getData().size() > 0) {
                     mapload = true;
-                    for (int i = 0; i < facilityDetailCommonJsonLists.size(); i++) {
-                        if (facilityDetailCommonJsonLists.get(i).getSource().equalsIgnoreCase("H")&& selectedOption.equalsIgnoreCase("H")) {
-                            markerOptions = new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()));
+                    for (int i = 0; i < bookingAvailabilityData.body().getData().size(); i++) {
+                        if (bookingAvailabilityData.body().getData().get(i).getAvailableCars() > 0 ) {
+                            markerOptions = new MarkerOptions().position(new LatLng(bookingAvailabilityData.body().getData().get(i).getLocation().get(0), bookingAvailabilityData.body().getData().get(i).getLocation().get(1)));
                             marker = mMap.addMarker(markerOptions);
-                            marker.setTag(facilityDetailCommonJsonLists.get(i));
-                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(orangeMarker));
+                            marker.setTag(bookingAvailabilityData.body().getData().get(i).getId());
+                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
                             // mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(orangeMarker));
-                        } else if((facilityDetailCommonJsonLists.get(i).getSource().equalsIgnoreCase("C"))&&(selectedOption.equalsIgnoreCase("C"))) {
+                        } /*else if((facilityDetailCommonJsonLists.get(i).getSource().equalsIgnoreCase("C"))&&(selectedOption.equalsIgnoreCase("C"))) {
                             //mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(blueMarker));
                             markerOptions = new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()));
                             marker = mMap.addMarker(markerOptions);
                             marker.setTag(facilityDetailCommonJsonLists.get(i));
                             marker.setIcon(BitmapDescriptorFactory.fromBitmap(blueMarker));
-                        }
+                        }*/
                     }
                 } else {
-                    mapload = false;
-                }*/
+                    //mapload = false;
+                }
+
+
                 if (ActivityCompat.checkSelfPermission(BookingMapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }

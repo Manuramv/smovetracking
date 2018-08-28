@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Manuramv on 8/28/2018.
  */
 
-class Datum {
+public  class Datum {
     @SerializedName("id")
     @Expose
     private Integer id;

@@ -2,6 +2,7 @@ package smove.com.smovebook.activities;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -22,6 +27,7 @@ import smove.com.smovebook.R;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
 import smove.com.smovebook.serviceimpl.BookingAvailabilityServiceImpl;
 import smove.com.smovebook.utilities.CommonUtils;
+import smove.com.smovebook.utilities.SmoveConstants;
 
 public class MainActivity extends CustomBaseActivity implements View.OnClickListener {
     Button btnDatePicker, btnTimePicker;
@@ -187,11 +193,18 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
         try {
             if (response != null && response.body().getData() != null) {
+                //Datum  indexItem=  ( (Datum) response.body().getData());
+               // ArrayList<Datum> testing = new ArrayList<Datum>();
+               // JSONObject jsonObject = new JSONObject(response.body().toString());
+
+                SmoveConstants.BOOK_RESPONSE = response;
                 Intent intent = new Intent(this, BookingMapActivity.class);
+                //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
+
                 startActivity(intent);
             }
         } catch (Exception e){
-            Log.d("TAG","something went wrong");
+            Log.d("TAG","something went wrong::"+e);
         }
     }
 
