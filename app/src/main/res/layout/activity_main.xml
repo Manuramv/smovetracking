@@ -6,7 +6,16 @@
     android:layout_height="match_parent"
     tools:context="smove.com.smovebook.activities.MainActivity">
 
-    <EditText
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From"
+        android:id="@+id/btn_from"
+        />
+    <!--<include layout="@layout/date_time_picker"/>-->
+
+
+   <!-- <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/in_date"
@@ -39,6 +48,6 @@
         android:id="@+id/btn_time"
         android:layout_below="@+id/btn_date"
         android:layout_alignLeft="@+id/btn_date"
-        android:layout_alignStart="@+id/btn_date" />
+        android:layout_alignStart="@+id/btn_date" />-->
 
 </RelativeLayout>
