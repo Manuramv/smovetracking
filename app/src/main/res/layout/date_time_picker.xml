@@ -23,7 +23,9 @@
         android:id="@+id/date_time_set"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:text="Set"
+        android:text="Select a date"
+        android:background="#1e2d63"
+        android:textColor="#ffffff"
         android:layout_height="0dp" />
 
 </LinearLayout>

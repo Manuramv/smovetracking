@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,11 +38,12 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
     private String date_time;
     Calendar calendar=null;
     DatePicker datePicker;
-
+    CommonUtils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        utils = new CommonUtils();
 
 
         btnFromTime = (Button) findViewById(R.id.btn_from);
@@ -94,7 +96,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         } else if( v == btnToTime || v == etToTime){
             showDatenTimePicker(etToTime);
         } else if( v == btnFindTaxi){
-            showTaxiAvailability();
+            isTimeOk();
         }
 
     }
@@ -171,21 +173,34 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
         try {
-            if (response != null && response.body().getData() != null) {
-                //Datum  indexItem=  ( (Datum) response.body().getData());
-               // ArrayList<Datum> testing = new ArrayList<Datum>();
-               // JSONObject jsonObject = new JSONObject(response.body().toString());
+            if(response.code()==200) {
+                if (response != null && response.body().getData() != null) {
+                    //Datum  indexItem=  ( (Datum) response.body().getData());
+                    // ArrayList<Datum> testing = new ArrayList<Datum>();
+                    // JSONObject jsonObject = new JSONObject(response.body().toString());
 
-                SmoveConstants.BOOK_RESPONSE = response;
-                Intent intent = new Intent(this, BookingMapActivity.class);
-                //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
+                    SmoveConstants.BOOK_RESPONSE = response;
+                    Intent intent = new Intent(this, BookingMapActivity.class);
+                    //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
+            } else {
+                utils.showCustomPopupMessage(MainActivity.this,response.errorBody().source().toString());
             }
         } catch (Exception e){
             Log.d("TAG","something went wrong::"+e);
+            utils.showCustomPopupMessage(MainActivity.this,"Something went wrong, please try again later");
         }
     }
 
+    public boolean isTimeOk(){
+        if(TextUtils.isEmpty(etFromTime.getText().toString()) || TextUtils.isEmpty(etToTime.getText().toString())){
+            utils.showCustomPopupMessage(MainActivity.this,"Please select start time and end time.");
+        } else {
+            showTaxiAvailability();
+        }
+        return true;
+    }
 
 }
