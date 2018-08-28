@@ -51,6 +51,13 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Taxi"
+        android:layout_centerInParent="true"
+        android:id="@+id/btn_findTaxi"
+        />
 
     <!--<include layout="@layout/date_time_picker"/>-->
 

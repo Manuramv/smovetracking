@@ -1,6 +1,7 @@
 package smove.com.smovebook.networking;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -8,7 +9,6 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -22,8 +22,12 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Url;
+import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
 import smove.com.smovebook.utilities.SmoveConstants;
 
 /**
@@ -56,6 +60,7 @@ public class ApiClientRequest {
                         // Request customization: add request headers
 
                         Request.Builder requestBuilder = null;
+                        requestBuilder = original.newBuilder();
                         Request request = requestBuilder.build();
                         return chain.proceed(request);
                     }
@@ -99,6 +104,9 @@ public class ApiClientRequest {
         }
     }
     public interface ApiService {
+
+        @GET
+        Call<GetBookingAvailabilityResponse> getBookingAvailabilityAPI(@Url Uri url);
 
     }
 

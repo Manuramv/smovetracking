@@ -14,10 +14,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import smove.com.smovebook.R;
+import smove.com.smovebook.serviceimpl.BookingAvailabilityServiceImpl;
 
 public class MainActivity extends CustomBaseActivity implements View.OnClickListener {
     Button btnDatePicker, btnTimePicker;
-    Button btnFromTime,btnToTime;
+    Button btnFromTime,btnToTime,btnFindTaxi;
     EditText txtDate, txtTime;
     EditText etFromTime,etToTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -34,6 +35,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
         btnFromTime = (Button) findViewById(R.id.btn_from);
         btnToTime = (Button) findViewById(R.id.btn_toTime);
+        btnFindTaxi = (Button) findViewById(R.id.btn_findTaxi);
         etFromTime = (EditText) findViewById(R.id.et_fromTime);
         etToTime = (EditText) findViewById(R.id.et_toTime);
        /* btnDatePicker = (Button) findViewById(R.id.btn_date);
@@ -45,6 +47,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         btnTimePicker.setOnClickListener(this);*/
         btnFromTime.setOnClickListener(this);
         btnToTime.setOnClickListener(this);
+        btnFindTaxi.setOnClickListener(this);
 
 
     }
@@ -55,6 +58,8 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
             showDatenTimePicker(etFromTime);
         } else if( v == btnToTime){
             showDatenTimePicker(etToTime);
+        } else if( v == btnFindTaxi){
+            showTaxiAvailability();
         }
 
        /* if (v == btnDatePicker) {
@@ -101,6 +106,8 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         }
 */
     }
+
+
 
     public void showDatenTimePicker(final EditText etSetTime){
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
@@ -160,5 +167,11 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
+    }
+
+    private void showTaxiAvailability() {
+        Log.d("TAG","show Taxi Availability");
+        BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
+        bookingAvailabilityServiceObj.getBookingAvailabilityInfo("1535401429","1535451429");
     }
 }
