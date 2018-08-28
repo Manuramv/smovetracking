@@ -1,9 +1,7 @@
 package smove.com.smovebook.activities;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +17,9 @@ import smove.com.smovebook.R;
 
 public class MainActivity extends CustomBaseActivity implements View.OnClickListener {
     Button btnDatePicker, btnTimePicker;
-    Button btnFrom;
+    Button btnFromTime,btnToTime;
     EditText txtDate, txtTime;
+    EditText etFromTime,etToTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private long time;
     private String date_time;
@@ -33,7 +32,10 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         setContentView(R.layout.activity_main);
 
 
-        btnFrom = (Button) findViewById(R.id.btn_from);
+        btnFromTime = (Button) findViewById(R.id.btn_from);
+        btnToTime = (Button) findViewById(R.id.btn_toTime);
+        etFromTime = (EditText) findViewById(R.id.et_fromTime);
+        etToTime = (EditText) findViewById(R.id.et_toTime);
        /* btnDatePicker = (Button) findViewById(R.id.btn_date);
         btnTimePicker = (Button) findViewById(R.id.btn_time);
         txtDate = (EditText) findViewById(R.id.in_date);
@@ -41,15 +43,18 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);*/
-        btnFrom.setOnClickListener(this);
+        btnFromTime.setOnClickListener(this);
+        btnToTime.setOnClickListener(this);
 
 
     }
 
     @Override
     public void onClick(View v) {
-        if (v == btnFrom) {
-            showDatenTimePicker();
+        if (v == btnFromTime) {
+            showDatenTimePicker(etFromTime);
+        } else if( v == btnToTime){
+            showDatenTimePicker(etToTime);
         }
 
        /* if (v == btnDatePicker) {
@@ -97,7 +102,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 */
     }
 
-    public void showDatenTimePicker(){
+    public void showDatenTimePicker(final EditText etSetTime){
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
@@ -126,12 +131,12 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
             public void onClick(View v) {
                 date_time = datePicker.getDayOfMonth() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getYear();
                 alertDialog.dismiss();
-                showtimePicker();
+                showtimePicker(etSetTime);
             }
         });
     }
 
-    private void showtimePicker() {
+    private void showtimePicker(final EditText etSetTime) {
         Log.d("TAG","show timer now");
         // Get Current Time
         final Calendar c = Calendar.getInstance();
@@ -148,6 +153,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
                         mHour = hourOfDay;
                         mMinute = minute;
                         Log.d("TAG","selected time::"+date_time+" "+hourOfDay + ":" + minute);
+                        etSetTime.setText(date_time+" "+hourOfDay+":"+minute);
 
                        // et_show_date_time.setText(date_time+" "+hourOfDay + ":" + minute);
 

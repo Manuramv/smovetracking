@@ -6,12 +6,52 @@
     android:layout_height="match_parent"
     tools:context="smove.com.smovebook.activities.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="From"
-        android:id="@+id/btn_from"
-        />
+        android:weightSum="2"
+        android:id="@+id/fromLayout"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_fromTime"
+            android:layout_weight="1.8"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From"
+            android:id="@+id/btn_from"
+            android:layout_weight=".2"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/fromLayout"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_toTime"
+            android:layout_weight="1.8"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To"
+            android:id="@+id/btn_toTime"
+            android:layout_weight=".2"
+            />
+
+    </LinearLayout>
+
+
     <!--<include layout="@layout/date_time_picker"/>-->
 
 
