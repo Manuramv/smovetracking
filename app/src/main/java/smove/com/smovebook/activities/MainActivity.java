@@ -16,7 +16,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import retrofit2.Response;
 import smove.com.smovebook.R;
+import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
 import smove.com.smovebook.serviceimpl.BookingAvailabilityServiceImpl;
 import smove.com.smovebook.utilities.CommonUtils;
 
@@ -179,6 +181,12 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         //convertToUnixTImestamp(etFromTime.getText().toString());
         BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
         bookingAvailabilityServiceObj.getBookingAvailabilityInfo(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()),CommonUtils.convertToUnixTImestamp(etToTime.getText().toString()));
+    }
+
+    public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
+            if(response!=null && response.body().getData()!= null){
+
+            }
     }
 
 

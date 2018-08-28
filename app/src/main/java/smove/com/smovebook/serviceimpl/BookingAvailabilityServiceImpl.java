@@ -6,6 +6,8 @@ import android.net.Uri;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import smove.com.smovebook.activities.CustomBaseActivity;
+import smove.com.smovebook.activities.MainActivity;
 import smove.com.smovebook.networking.ApiClientRequest;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
 import smove.com.smovebook.utilities.CommonUtils;
@@ -34,7 +36,9 @@ public class BookingAvailabilityServiceImpl {
                 new ApiClientRequest(mActivityObj.getApplicationContext()).getParkwayService().getBookingAvailabilityAPI(bookingAvailabilityURL).enqueue(new Callback<GetBookingAvailabilityResponse>() {
                     @Override
                     public void onResponse(Call<GetBookingAvailabilityResponse> call, Response<GetBookingAvailabilityResponse> response) {
-
+                        if(mActivityObj instanceof MainActivity){
+                            ((MainActivity) mActivityObj).taxiAvailabilityResponse(response);
+                        }
                     }
 
                     @Override
