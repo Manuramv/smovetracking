@@ -10,18 +10,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import smove.com.smovebook.R;
 import smove.com.smovebook.serviceimpl.BookingAvailabilityServiceImpl;
+import smove.com.smovebook.utilities.CommonUtils;
 
 public class MainActivity extends CustomBaseActivity implements View.OnClickListener {
     Button btnDatePicker, btnTimePicker;
     Button btnFromTime,btnToTime,btnFindTaxi;
     EditText txtDate, txtTime;
     EditText etFromTime,etToTime;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int mYear, mMonth, mDay, mHour, mMinute,mSecond;
     private long time;
     private String date_time;
     Calendar calendar=null;
@@ -149,6 +153,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
+        mMinute = c.get(Calendar.SECOND);
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
@@ -160,7 +165,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
                         mHour = hourOfDay;
                         mMinute = minute;
                         Log.d("TAG","selected time::"+date_time+" "+hourOfDay + ":" + minute);
-                        etSetTime.setText(date_time+" "+hourOfDay+":"+minute);
+                        etSetTime.setText(date_time+" "+hourOfDay+":"+minute+ mSecond);
 
                        // et_show_date_time.setText(date_time+" "+hourOfDay + ":" + minute);
 
@@ -171,7 +176,10 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
     private void showTaxiAvailability() {
         Log.d("TAG","show Taxi Availability");
+        //convertToUnixTImestamp(etFromTime.getText().toString());
         BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
-        bookingAvailabilityServiceObj.getBookingAvailabilityInfo("1535401429","1535451429");
+        bookingAvailabilityServiceObj.getBookingAvailabilityInfo(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()),CommonUtils.convertToUnixTImestamp(etToTime.getText().toString()));
     }
+
+
 }
