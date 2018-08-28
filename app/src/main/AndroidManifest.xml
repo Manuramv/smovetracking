@@ -26,6 +26,10 @@
             android:name=".activities.BookingMapActivity"
             android:label="@string/title_activity_booking_map"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC0bwgoL0KaR4YBM2aN0OmhMF6t7toO7CA" />
     </application>
 
 </manifest>

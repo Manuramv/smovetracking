@@ -1,6 +1,7 @@
 package smove.com.smovebook.activities;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -184,9 +185,14 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
     }
 
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
-            if(response!=null && response.body().getData()!= null){
-
+        try {
+            if (response != null && response.body().getData() != null) {
+                Intent intent = new Intent(this, BookingMapActivity.class);
+                startActivity(intent);
             }
+        } catch (Exception e){
+            Log.d("TAG","something went wrong");
+        }
     }
 
 
