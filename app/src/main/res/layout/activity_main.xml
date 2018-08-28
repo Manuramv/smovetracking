@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:weightSum="2"
         android:padding="8dp"
+        android:id="@+id/toLayout"
         android:layout_marginTop="4dp"
         android:layout_below="@+id/fromLayout"
         android:orientation="horizontal">
@@ -60,16 +61,36 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:layout_below="@+id/toLayout"
+        android:orientation="vertical"
+        android:gravity="center">
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#1e2d63"
         android:padding="16dp"
+
         android:textColor="#ffffff"
         android:text="Taxi Availability"
-        android:layout_centerInParent="true"
+
         android:id="@+id/btn_findTaxi"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/btn_findTaxi"
+        android:background="#1e2d63"
+        android:padding="16dp"
+        android:textColor="#ffffff"
+        android:text="Trace Car"
+        android:id="@+id/btn_traceTaxi"
+        />
+    </RelativeLayout>
 
     <!--<include layout="@layout/date_time_picker"/>-->
 

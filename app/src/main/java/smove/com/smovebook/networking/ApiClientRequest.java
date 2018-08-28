@@ -28,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
+import smove.com.smovebook.networking.response.carlocation.GetCarLocationResponse;
 import smove.com.smovebook.utilities.SmoveConstants;
 
 /**
@@ -108,9 +109,12 @@ public class ApiClientRequest {
         @GET
         Call<GetBookingAvailabilityResponse> getBookingAvailabilityAPI(@Url Uri url);
 
+        @GET
+        Call<GetCarLocationResponse> getCarLocationAPI(@Url Uri url);
+
     }
 
-    public ApiService getParkwayService() {
+    public ApiService getApiService() {
         return apiService;
     }
     

@@ -27,12 +27,14 @@ import java.util.GregorianCalendar;
 import retrofit2.Response;
 import smove.com.smovebook.R;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
+import smove.com.smovebook.networking.response.carlocation.GetCarLocationResponse;
 import smove.com.smovebook.serviceimpl.BookingAvailabilityServiceImpl;
+import smove.com.smovebook.serviceimpl.CarLocationServiceImpl;
 import smove.com.smovebook.utilities.CommonUtils;
 import smove.com.smovebook.utilities.SmoveConstants;
 
 public class MainActivity extends CustomBaseActivity implements View.OnClickListener {
-    Button btnFromTime,btnToTime,btnFindTaxi;
+    Button btnFromTime,btnToTime,btnFindTaxi,btnTraceTaxi;
     EditText etFromTime,etToTime;
     private int  mHour, mMinute;
     private String date_time;
@@ -49,6 +51,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         btnFromTime = (Button) findViewById(R.id.btn_from);
         btnToTime = (Button) findViewById(R.id.btn_toTime);
         btnFindTaxi = (Button) findViewById(R.id.btn_findTaxi);
+        btnTraceTaxi = (Button) findViewById(R.id.btn_traceTaxi);
         etFromTime = (EditText) findViewById(R.id.et_fromTime);
         etToTime = (EditText) findViewById(R.id.et_toTime);
        /* btnDatePicker = (Button) findViewById(R.id.btn_date);
@@ -63,6 +66,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         btnFindTaxi.setOnClickListener(this);
         etFromTime.setOnClickListener(this);
         etToTime.setOnClickListener(this);
+        btnTraceTaxi.setOnClickListener(this);
         etFromTime.setInputType(0);
         etToTime.setInputType(0);
 
@@ -97,9 +101,12 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
             showDatenTimePicker(etToTime);
         } else if( v == btnFindTaxi){
             isTimeOk();
+        } else if( v == btnTraceTaxi){
+            traceTaxiLocations();
         }
 
     }
+
 
 
 
@@ -172,6 +179,14 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         bookingAvailabilityServiceObj.getBookingAvailabilityInfo(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()),CommonUtils.convertToUnixTImestamp(etToTime.getText().toString()));
     }
 
+    private void traceTaxiLocations() {
+        Log.d("TAG","Trace Taxi locations");
+        CommonUtils.showBusyIndicator(this);
+        //convertToUnixTImestamp(etFromTime.getText().toString());
+        CarLocationServiceImpl carLocationServiceObj = new CarLocationServiceImpl(MainActivity.this);
+        carLocationServiceObj.getCarLocationInfo();
+    }
+
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
         try {
             CommonUtils.removeBusyIndicator(this);
@@ -206,4 +221,28 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         return true;
     }
 
+    public void carLocationResponse(Response<GetCarLocationResponse> response) {
+        try {
+            CommonUtils.removeBusyIndicator(this);
+            if(response.code()==200) {
+               /* if (response != null && response.body().getData() != null) {
+                    //Datum  indexItem=  ( (Datum) response.body().getData());
+                    // ArrayList<Datum> testing = new ArrayList<Datum>();
+                    // JSONObject jsonObject = new JSONObject(response.body().toString());
+
+                    SmoveConstants.BOOK_RESPONSE = response;
+                    Intent intent = new Intent(this, BookingMapActivity.class);
+                    //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
+
+                    startActivity(intent);*/
+               // }
+            } else {
+                utils.showCustomPopupMessage(MainActivity.this,response.errorBody().source().toString());
+            }
+        } catch (Exception e){
+            Log.d("TAG","something went wrong::"+e);
+            CommonUtils.removeBusyIndicator(this);
+            utils.showCustomPopupMessage(MainActivity.this,"Something went wrong, please try again later");
+        }
+    }
 }

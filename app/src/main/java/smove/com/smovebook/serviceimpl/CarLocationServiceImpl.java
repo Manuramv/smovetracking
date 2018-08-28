@@ -9,39 +9,39 @@ import retrofit2.Response;
 import smove.com.smovebook.activities.MainActivity;
 import smove.com.smovebook.networking.ApiClientRequest;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
+import smove.com.smovebook.networking.response.carlocation.GetCarLocationResponse;
 import smove.com.smovebook.utilities.CommonUtils;
 import smove.com.smovebook.utilities.SmoveConstants;
 
 /**
- * Created by Manuramv on 8/28/2018.
+ * Created by Manuramv on 8/29/2018.
  */
 
-public class BookingAvailabilityServiceImpl {
-
+public class CarLocationServiceImpl {
     private Context mActivityObj;
 
-    public BookingAvailabilityServiceImpl(Context mActivity) {
+    public CarLocationServiceImpl(Context mActivity) {
         this.mActivityObj = mActivity;
     }
 
-    public void getBookingAvailabilityInfo(String startTIme, String endTime) {
+    public void getCarLocationInfo() {
         try {
             if(CommonUtils.isConnectingToInternet(mActivityObj.getApplicationContext())){
-                String paymentStatusUrl = SmoveConstants.END_POINT+"availability?startTime="+startTIme+"&endTime="+endTime;
+                String paymentStatusUrl = SmoveConstants.END_POINT+"locations";
                 Uri bookingAvailabilityURL = Uri.parse(paymentStatusUrl);
 
 
                 //CommonUtils.showBusyIndicator(mActivityObj);
-                new ApiClientRequest(mActivityObj.getApplicationContext()).getApiService().getBookingAvailabilityAPI(bookingAvailabilityURL).enqueue(new Callback<GetBookingAvailabilityResponse>() {
+                new ApiClientRequest(mActivityObj.getApplicationContext()).getApiService().getCarLocationAPI(bookingAvailabilityURL).enqueue(new Callback<GetCarLocationResponse>() {
                     @Override
-                    public void onResponse(Call<GetBookingAvailabilityResponse> call, Response<GetBookingAvailabilityResponse> response) {
+                    public void onResponse(Call<GetCarLocationResponse> call, Response<GetCarLocationResponse> response) {
                         if(mActivityObj instanceof MainActivity){
-                            ((MainActivity) mActivityObj).taxiAvailabilityResponse(response);
+                            ((MainActivity) mActivityObj).carLocationResponse(response);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<GetBookingAvailabilityResponse> call, Throwable t) {
+                    public void onFailure(Call<GetCarLocationResponse> call, Throwable t) {
 
                     }
 
