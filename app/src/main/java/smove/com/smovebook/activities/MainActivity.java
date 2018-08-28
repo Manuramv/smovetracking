@@ -23,6 +23,9 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private long time;
+    private String date_time;
+    Calendar calendar=null;
+    DatePicker datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +100,16 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
     public void showDatenTimePicker(){
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-
+        datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
+       // final Calendar calendar=null;
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
+
                 //TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.time_picker);
 
-                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                 calendar = new GregorianCalendar(datePicker.getYear(),
                         datePicker.getMonth(),
                         datePicker.getDayOfMonth());
                         /*timePicker.getCurrentHour(),
@@ -120,6 +124,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         Button setDate = (Button) dialogView.findViewById(R.id.date_time_set);
         setDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                date_time = datePicker.getDayOfMonth() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getYear();
                 alertDialog.dismiss();
                 showtimePicker();
             }
@@ -142,8 +147,10 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
                         mHour = hourOfDay;
                         mMinute = minute;
+                        Log.d("TAG","selected time::"+date_time+" "+hourOfDay + ":" + minute);
 
                        // et_show_date_time.setText(date_time+" "+hourOfDay + ":" + minute);
+
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
