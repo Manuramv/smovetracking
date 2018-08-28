@@ -43,6 +43,7 @@ import java.util.Map;
 
 import retrofit2.Response;
 import smove.com.smovebook.R;
+import smove.com.smovebook.networking.response.bookingapi.Datum;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
 import smove.com.smovebook.utilities.SmoveConstants;
 
@@ -113,10 +114,11 @@ public class BookingMapActivity extends CustomBaseActivity {
                     mapload = true;
                     for (int i = 0; i < bookingAvailabilityData.body().getData().size(); i++) {
                         if (bookingAvailabilityData.body().getData().get(i).getAvailableCars() > 0 ) {
-                            markerOptions = new MarkerOptions().position(new LatLng(bookingAvailabilityData.body().getData().get(i).getLocation().get(0), bookingAvailabilityData.body().getData().get(i).getLocation().get(1)));
+                            markerOptions = new MarkerOptions().position(new LatLng(bookingAvailabilityData.body().getData().get(i).getLocation().get(0), bookingAvailabilityData.body().getData().get(i).getLocation().get(1))).title(bookingAvailabilityData.body().getData().get(i).getDropoffLocations().size()+" Drop off locations available");
                             marker = mMap.addMarker(markerOptions);
-                            marker.setTag(bookingAvailabilityData.body().getData().get(i).getId());
+                            marker.setTag(bookingAvailabilityData.body().getData().get(i));
                             marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
+
                             // mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(orangeMarker));
                         } /*else if((facilityDetailCommonJsonLists.get(i).getSource().equalsIgnoreCase("C"))&&(selectedOption.equalsIgnoreCase("C"))) {
                             //mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(blueMarker));
@@ -176,14 +178,14 @@ public class BookingMapActivity extends CustomBaseActivity {
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                       /* FacilityDetailCommonJsonList indexItem = (FacilityDetailCommonJsonList) (marker.getTag());
-                        if (indexItem != null) {
-                            Intent fd = new Intent(mContext, FacilityDetails.class);
-                            fd.putExtra("facility", indexItem);
-                            //fd.putExtra("CURRENTLOCATION", location);
-                            //fd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(fd);
-                        }*/
+                         //selectedId =  (marker.getTag());
+                        Datum indexItem = (Datum) (marker.getTag());
+                        Log.d("TAG","Clicked drop location::"+indexItem.getDropoffLocations().size());
+                        if (marker.isInfoWindowShown()) {
+                            marker.hideInfoWindow();
+                        } else {
+                            marker.showInfoWindow();
+                        }
                         return false;
                     }
                 });
