@@ -118,18 +118,10 @@ public class BookingMapActivity extends CustomBaseActivity {
                             marker = mMap.addMarker(markerOptions);
                             marker.setTag(bookingAvailabilityData.body().getData().get(i));
                             marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
-
-                            // mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(orangeMarker));
-                        } /*else if((facilityDetailCommonJsonLists.get(i).getSource().equalsIgnoreCase("C"))&&(selectedOption.equalsIgnoreCase("C"))) {
-                            //mMap.addMarker(new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()))).setIcon(BitmapDescriptorFactory.fromBitmap(blueMarker));
-                            markerOptions = new MarkerOptions().position(new LatLng(facilityDetailCommonJsonLists.get(i).getLatitude(), facilityDetailCommonJsonLists.get(i).getLongitude()));
-                            marker = mMap.addMarker(markerOptions);
-                            marker.setTag(facilityDetailCommonJsonLists.get(i));
-                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(blueMarker));
-                        }*/
+                         }
                     }
                 } else {
-                    //mapload = false;
+                    mapload = false;
                 }
 
 
