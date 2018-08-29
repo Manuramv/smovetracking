@@ -35,7 +35,7 @@ public class CommonUtils {
         return isConnected;
 
     }
-
+//convert the time to unix time stamp.
     public static long convertToUnixTImestamp(String timeToCOnvert) {
         long unixTime = 0;
         try {
@@ -52,7 +52,7 @@ public class CommonUtils {
         return  unixTime;
     }
 
-
+//MEthod to show the popup messages.
     public static void showCustomPopupMessage(final Activity mContext, String msg){
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = null;
         LayoutInflater inflaterObjRef = null;
@@ -84,7 +84,7 @@ public class CommonUtils {
             e.printStackTrace();
         }
     }
-
+//To show the loader
     public static void showBusyIndicator(final AppCompatActivity activityObj) {
         try {
             if (activityObj != null) {
@@ -103,7 +103,7 @@ public class CommonUtils {
             e.printStackTrace();
         }
     }
-
+//dismiss the progress bar.
     public static void removeBusyIndicator(final AppCompatActivity activityObj) {
         try {
             activityObj.runOnUiThread(new Runnable() {

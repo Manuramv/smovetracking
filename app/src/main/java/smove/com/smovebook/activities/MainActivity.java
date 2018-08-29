@@ -100,7 +100,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         } else if( v == btnToTime || v == etToTime){
             showDatenTimePicker(etToTime);
         } else if( v == btnFindTaxi){
-            isTimeOk();
+            proceedWithTimeCheck();
         } else if( v == btnTraceTaxi){
             traceTaxiLocations();
         }
@@ -109,7 +109,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
 
 
-
+ // Method to show the date and time picker.
     public void showDatenTimePicker(final EditText etSetTime){
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -143,7 +143,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
             }
         });
     }
-
+//Method to show the time picker once the user selected date.
     private void showtimePicker(final EditText etSetTime) {
         Log.d("TAG","show timer now");
         // Get Current Time
@@ -171,6 +171,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         timePickerDialog.show();
     }
 
+    //Invoking the Booking vailabilty API call.
     private void showTaxiAvailability() {
         Log.d("TAG","show Taxi Availability");
         CommonUtils.showBusyIndicator(this);
@@ -178,7 +179,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
         bookingAvailabilityServiceObj.getBookingAvailabilityInfo(String.valueOf(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString())),String.valueOf(CommonUtils.convertToUnixTImestamp(etToTime.getText().toString())));
     }
-
+    //Invoking the Booking Trace Taxi API call.
     private void traceTaxiLocations() {
         Log.d("TAG","Trace Taxi locations");
         CommonUtils.showBusyIndicator(this);
@@ -187,6 +188,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         carLocationServiceObj.getCarLocationInfo();
     }
 
+    //Response from the book availability api and proceed with the business logic
     public void taxiAvailabilityResponse(Response<GetBookingAvailabilityResponse> response){
         try {
             CommonUtils.removeBusyIndicator(this);
@@ -213,7 +215,8 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         }
     }
 
-    public boolean isTimeOk(){
+    //Check and validate the time.
+    public boolean proceedWithTimeCheck(){
         if(TextUtils.isEmpty(etFromTime.getText().toString()) || TextUtils.isEmpty(etToTime.getText().toString())){
             utils.showCustomPopupMessage(MainActivity.this,"Please select start time and end time.");
         } else {
@@ -226,6 +229,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         return true;
     }
 
+    //Response from the car location api and proceed with the business logic
     public void carLocationResponse(Response<GetCarLocationResponse> response) {
         try {
             CommonUtils.removeBusyIndicator(this);

@@ -116,7 +116,7 @@ public class BookingMapActivity extends CustomBaseActivity {
 
     }
 
-
+//This method is common for both car location and booking availability. based on condition we are executing business logic.
     public void showLocation(){
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
@@ -203,17 +203,19 @@ public class BookingMapActivity extends CustomBaseActivity {
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
                             0, mLocationListener);
                 }
-
+                //Marker click currently enabled only for booking car availability functionality.
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                         //selectedId =  (marker.getTag());
-                        Datum indexItem = (Datum) (marker.getTag());
-                        Log.d("TAG","Clicked drop location::"+indexItem.getDropoffLocations().size());
-                        if (marker.isInfoWindowShown()) {
-                            marker.hideInfoWindow();
-                        } else {
-                            marker.showInfoWindow();
+                        if(entryFrom.equalsIgnoreCase("bookingtaxi")) {
+                            Datum indexItem = (Datum) (marker.getTag());
+                            Log.d("TAG", "Clicked drop location::" + indexItem.getDropoffLocations().size());
+                            if (marker.isInfoWindowShown()) {
+                                marker.hideInfoWindow();
+                            } else {
+                                marker.showInfoWindow();
+                            }
+                            return false;
                         }
                         return false;
                     }
@@ -226,7 +228,7 @@ public class BookingMapActivity extends CustomBaseActivity {
 
     }
 
-
+    // Location listner
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
@@ -263,10 +265,7 @@ public class BookingMapActivity extends CustomBaseActivity {
     };
 
 
-
-
-
-
+    //Runtime permission request from Marshmallow version
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean checkAndRequestPermissions() {
 
@@ -328,7 +327,7 @@ public class BookingMapActivity extends CustomBaseActivity {
         }
     }
 
-
+// show the alert if user doesn't give the pernmission
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(mActivity)
                 .setMessage(message)
