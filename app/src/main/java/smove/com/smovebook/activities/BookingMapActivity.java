@@ -22,6 +22,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -85,9 +87,11 @@ public class BookingMapActivity extends CustomBaseActivity {
         entryFrom = getIntent().getStringExtra("comingFrom");
         if(entryFrom.equalsIgnoreCase("bookingtaxi")){
             bookingAvailabilityData = SmoveConstants.BOOK_RESPONSE;
+            setAppToolbar("Book a car",R.drawable.ic_back_arrow);
             Log.d("TAG","Booking availability::"+ bookingAvailabilityData.body().getData().size());
         } else if(entryFrom.equalsIgnoreCase("carlocations")){
             locationTrackingData = SmoveConstants.CAR_LOCATION;
+            setAppToolbar("Locate a car",R.drawable.ic_back_arrow);
         }
 
 
@@ -334,5 +338,22 @@ public class BookingMapActivity extends CustomBaseActivity {
                 .show();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

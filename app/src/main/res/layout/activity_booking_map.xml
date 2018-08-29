@@ -6,10 +6,14 @@
     android:layout_height="match_parent"
     tools:context="smove.com.smovebook.activities.BookingMapActivity">
 
+    <include layout="@layout/apptoolbar"
+        android:id="@+id/toolbar"/>
+
     <com.google.android.gms.maps.MapView
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
         android:id="@+id/mapBooking" />
 
 </RelativeLayout>
