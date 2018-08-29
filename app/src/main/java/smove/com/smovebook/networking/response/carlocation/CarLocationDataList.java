@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by Manuramv on 8/29/2018.
  */
 
-class CarLocationDataList implements Serializable{
+public class CarLocationDataList implements Serializable{
     @SerializedName("latitude")
     @Expose
     private String latitude;

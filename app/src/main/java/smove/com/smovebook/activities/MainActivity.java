@@ -198,6 +198,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
 
                     SmoveConstants.BOOK_RESPONSE = response;
                     Intent intent = new Intent(this, BookingMapActivity.class);
+                    intent.putExtra("comingFrom","bookingtaxi");
                     //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
 
                     startActivity(intent);
@@ -225,17 +226,17 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         try {
             CommonUtils.removeBusyIndicator(this);
             if(response.code()==200) {
-               /* if (response != null && response.body().getData() != null) {
+                if (response != null && response.body().getData() != null) {
                     //Datum  indexItem=  ( (Datum) response.body().getData());
                     // ArrayList<Datum> testing = new ArrayList<Datum>();
                     // JSONObject jsonObject = new JSONObject(response.body().toString());
-
-                    SmoveConstants.BOOK_RESPONSE = response;
+                    SmoveConstants.CAR_LOCATION = response;
                     Intent intent = new Intent(this, BookingMapActivity.class);
+                    intent.putExtra("comingFrom","carlocations");
                     //intent.putParcelableArrayListExtra("bookingavailability",  jsonObject);
 
-                    startActivity(intent);*/
-               // }
+                    startActivity(intent);
+               }
             } else {
                 utils.showCustomPopupMessage(MainActivity.this,response.errorBody().source().toString());
             }

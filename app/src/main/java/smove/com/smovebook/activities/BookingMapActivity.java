@@ -45,6 +45,7 @@ import retrofit2.Response;
 import smove.com.smovebook.R;
 import smove.com.smovebook.networking.response.bookingapi.Datum;
 import smove.com.smovebook.networking.response.bookingapi.GetBookingAvailabilityResponse;
+import smove.com.smovebook.networking.response.carlocation.GetCarLocationResponse;
 import smove.com.smovebook.utilities.SmoveConstants;
 
 public class BookingMapActivity extends CustomBaseActivity {
@@ -64,7 +65,10 @@ public class BookingMapActivity extends CustomBaseActivity {
     int height = 90;
     int width = 70;
     Response<GetBookingAvailabilityResponse> bookingAvailabilityData;
+    private Response<GetCarLocationResponse> locationTrackingData;
     private boolean mapload=false;
+    private String entryFrom;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -78,8 +82,14 @@ public class BookingMapActivity extends CustomBaseActivity {
        // bookAvailabilityDataStr = getIntent().getStringExtra("bookingavailability");
        // bookAvailabilityData = bookAvailabilityDataStr;
 
-        bookingAvailabilityData = SmoveConstants.BOOK_RESPONSE;
-        Log.d("TAG","Booking availability::"+ bookingAvailabilityData.body().getData().size());
+        entryFrom = getIntent().getStringExtra("comingFrom");
+        if(entryFrom.equalsIgnoreCase("bookingtaxi")){
+            bookingAvailabilityData = SmoveConstants.BOOK_RESPONSE;
+            Log.d("TAG","Booking availability::"+ bookingAvailabilityData.body().getData().size());
+        } else if(entryFrom.equalsIgnoreCase("carlocations")){
+            locationTrackingData = SmoveConstants.CAR_LOCATION;
+        }
+
 
         mMapView = (MapView) findViewById(R.id.mapBooking);
         mMapView.onCreate(savedInstanceState);
@@ -110,18 +120,41 @@ public class BookingMapActivity extends CustomBaseActivity {
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 // Add a marker in Sydney, Australia, and move the camera.
-                if (bookingAvailabilityData.body().getData().size() > 0) {
-                    mapload = true;
-                    for (int i = 0; i < bookingAvailabilityData.body().getData().size(); i++) {
-                        if (bookingAvailabilityData.body().getData().get(i).getAvailableCars() > 0 ) {
-                            markerOptions = new MarkerOptions().position(new LatLng(bookingAvailabilityData.body().getData().get(i).getLocation().get(0), bookingAvailabilityData.body().getData().get(i).getLocation().get(1))).title(bookingAvailabilityData.body().getData().get(i).getDropoffLocations().size()+" Drop off locations available");
-                            marker = mMap.addMarker(markerOptions);
-                            marker.setTag(bookingAvailabilityData.body().getData().get(i));
-                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
-                         }
+                if(entryFrom.equalsIgnoreCase("bookingtaxi")) {
+                    if (bookingAvailabilityData.body().getData().size() > 0) {
+                        mapload = true;
+                        for (int i = 0; i < bookingAvailabilityData.body().getData().size(); i++) {
+                            if (bookingAvailabilityData.body().getData().get(i).getAvailableCars() > 0) {
+                                markerOptions = new MarkerOptions().position(new LatLng(bookingAvailabilityData.body().getData().get(i).getLocation().get(0), bookingAvailabilityData.body().getData().get(i).getLocation().get(1))).title(bookingAvailabilityData.body().getData().get(i).getDropoffLocations().size() + " Drop off locations available");
+                                marker = mMap.addMarker(markerOptions);
+                                marker.setTag(bookingAvailabilityData.body().getData().get(i));
+                                marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
+                            }
+                        }
+                    } else {
+                        mapload = false;
                     }
-                } else {
-                    mapload = false;
+                } else if(entryFrom.equalsIgnoreCase("carlocations")){
+                    Log.d("TAG","invoke location tracking map");
+                    if (locationTrackingData.body().getData().size() > 0) {
+                        mapload = true;
+                        for (int i = 0; i < locationTrackingData.body().getData().size(); i++) {
+                            if (locationTrackingData.body().getData().get(i).getIsOnTrip()) {
+                                markerOptions = new MarkerOptions().position(new LatLng(Double.parseDouble(locationTrackingData.body().getData().get(i).getLatitude()), Double.parseDouble(locationTrackingData.body().getData().get(i).getLongitude())));//.title(bookingAvailabilityData.body().getData().get(i).getDropoffLocations().size() + " Drop off locations available");
+                                marker = mMap.addMarker(markerOptions);
+                                marker.setTag(locationTrackingData.body().getData().get(i));
+                                marker.setIcon(BitmapDescriptorFactory.fromBitmap(greenMarker));
+                            } else {
+                                markerOptions = new MarkerOptions().position(new LatLng(Double.parseDouble(locationTrackingData.body().getData().get(i).getLatitude()), Double.parseDouble(locationTrackingData.body().getData().get(i).getLongitude())));//.title(bookingAvailabilityData.body().getData().get(i).getDropoffLocations().size() + " Drop off locations available");
+                                marker = mMap.addMarker(markerOptions);
+                                marker.setTag(locationTrackingData.body().getData().get(i));
+                                marker.setIcon(BitmapDescriptorFactory.fromBitmap(redMarker));
+                            }
+                        }
+                    } else {
+                        mapload = false;
+                    }
+
                 }
 
 
