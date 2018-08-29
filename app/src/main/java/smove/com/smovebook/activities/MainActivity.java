@@ -176,7 +176,7 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         CommonUtils.showBusyIndicator(this);
         //convertToUnixTImestamp(etFromTime.getText().toString());
         BookingAvailabilityServiceImpl bookingAvailabilityServiceObj = new BookingAvailabilityServiceImpl(MainActivity.this);
-        bookingAvailabilityServiceObj.getBookingAvailabilityInfo(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()),CommonUtils.convertToUnixTImestamp(etToTime.getText().toString()));
+        bookingAvailabilityServiceObj.getBookingAvailabilityInfo(String.valueOf(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString())),String.valueOf(CommonUtils.convertToUnixTImestamp(etToTime.getText().toString())));
     }
 
     private void traceTaxiLocations() {
@@ -217,7 +217,11 @@ public class MainActivity extends CustomBaseActivity implements View.OnClickList
         if(TextUtils.isEmpty(etFromTime.getText().toString()) || TextUtils.isEmpty(etToTime.getText().toString())){
             utils.showCustomPopupMessage(MainActivity.this,"Please select start time and end time.");
         } else {
-            showTaxiAvailability();
+            if(CommonUtils.convertToUnixTImestamp(etFromTime.getText().toString()) > CommonUtils.convertToUnixTImestamp(etToTime.getText().toString())){
+                utils.showCustomPopupMessage(MainActivity.this,"End time should be future date/time");
+            } else {
+                showTaxiAvailability();
+            }
         }
         return true;
     }

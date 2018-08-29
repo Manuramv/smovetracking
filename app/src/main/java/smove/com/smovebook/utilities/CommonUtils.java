@@ -36,7 +36,7 @@ public class CommonUtils {
 
     }
 
-    public static String convertToUnixTImestamp(String timeToCOnvert) {
+    public static long convertToUnixTImestamp(String timeToCOnvert) {
         long unixTime = 0;
         try {
             //new java.util.Date(Long.parseLong(timeToCOnvert));
@@ -49,7 +49,7 @@ public class CommonUtils {
         } catch (Exception e){
             Log.d("TAG","Exception while converting the date to unix::"+e);
         }
-        return  String.valueOf(unixTime);
+        return  unixTime;
     }
 
 
